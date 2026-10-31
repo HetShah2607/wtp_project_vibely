@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Vibely</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #09090f, #151027, #080b18);
+            color: #ffffff;
+        }
+
+        .page-heading {
+            text-align: center;
+            padding: 30px 15px 10px;
+        }
+
+        .page-heading h1 {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .page-heading p {
+            color: #b9b4cc;
+            margin-top: 10px;
+        }
+
+        .login-layout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 115px);
+            padding: 25px 5%;
+        }
+
+        /* Left section */
+        .logo-section {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 35px;
+        }
+
+        .logo-section img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            object-fit: contain;
+
+            /* Blends the black JPEG background into the page */
+            mix-blend-mode: screen;
+        }
+
+        /* Right section */
+        .form-section {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 35px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            padding: 38px;
+            border: 1px solid rgba(167, 139, 250, 0.25);
+            border-radius: 20px;
+            background: rgba(20, 18, 35, 0.88);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .login-card h2 {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #aaa5bd;
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            color: #eeeaf8;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            background: #0d0c17;
+            color: #ffffff;
+            border: 1px solid #49415f;
+            border-radius: 9px;
+            padding: 12px 14px;
+            margin-bottom: 20px;
+        }
+
+        .form-control:focus {
+            background: #0d0c17;
+            color: #ffffff;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 0.2rem rgba(139, 92, 246, 0.2);
+        }
+
+        .form-control::placeholder {
+            color: #918ba5;
+        }
+
+        .remember-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            color: #d3cde2;
+            font-size: 14px;
+        }
+
+        .form-check-input {
+            background-color: #0d0c17;
+            border-color: #75688f;
+        }
+
+        .form-check-input:checked {
+            background-color: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 9px;
+            background: linear-gradient(90deg, #7c3aed, #2563eb);
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            opacity: 0.88;
+            transform: translateY(-1px);
+        }
+
+        .signup-text {
+            text-align: center;
+            color: #aaa5bd;
+            margin: 22px 0 0;
+            font-size: 14px;
+        }
+
+        .signup-text a {
+            color: #b49aff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile and tablet layout */
+        @media (max-width: 768px) {
+            .login-layout {
+                flex-direction: column;
+                padding: 10px 20px 35px;
+            }
+
+            .logo-section,
+            .form-section {
+                width: 100%;
+                padding: 15px 5px;
+            }
+
+            .logo-section img {
+                max-width: 320px;
+            }
+
+            .login-card {
+                padding: 28px 22px;
+            }
+
+            .page-heading {
+                padding-top: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="page-heading">
+        <h1>Vibely - Enjoy Non-stop Music</h1>
+        <p>Your music, your mood, your vibe.</p>
+    </header>
+
+    <main class="login-layout">
+
+        <!-- LEFT SIDE: LOGO -->
+        <section class="logo-section">
+            <img src="assets/images/vibely_image.jpeg" alt="Vibely Music Logo">
+        </section>
+
+        <!-- RIGHT SIDE: LOGIN FORM -->
+        <section class="form-section">
+            <div class="login-card">
+
+                <h2>Welcome Back!</h2>
+                <p class="subtitle">Log in to continue listening</p>
+
+                <form action="#" method="post">
+
+                    <div>
+                        <label for="email" class="form-label">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required>
+                    </div>
+
+                    <div>
+                        <label for="password" class="form-label">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+                    </div>
+
+                    <div class="remember-row">
+                        <div class="form-check">
+                            <input
+                                type="checkbox"
+                                class="form-check-input"
+                                id="remember"
+                                name="remember">
+
+                            <label class="form-check-label" for="remember">
+                                Remember me
+                            </label>
+                        </div>
+
+                        <a href="forgot-password.html"
+                           style="color: #b49aff; text-decoration: none;">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <button type="submit" class="login-btn">
+                        Login
+                    </button>
+
+                    <p class="signup-text">
+                        Don't have an account?
+                        <a href="signup.html">Sign up</a>
+                    </p>
+
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>
+```

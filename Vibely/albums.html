@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vibely — Explore your favourite music albums.">
+
+    <title>Albums · Vibely</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body data-page="albums">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+
+        <a href="index.html" class="brand">
+            <img src="assets/images/vibely_image_1.png" alt="Vibely Logo">
+        </a>
+
+        <p class="menu-title">BROWSE</p>
+
+        <nav class="sidebar-nav">
+            <a href="index.html">
+                <span><i class="fa-solid fa-house"></i></span> Home
+            </a>
+
+            <!-- Artists is NOT active on this page -->
+            <a href="artists.html">
+                <span><i class="fa-solid fa-microphone-lines"></i></span> Artists
+            </a>
+
+            <!-- Albums IS active on this page -->
+            <a href="albums.html" class="active">
+                <span><i class="fa-solid fa-compact-disc"></i></span> Albums
+            </a>
+
+            <a href="categories.html">
+                <span><i class="fa-solid fa-icons"></i></span> Categories
+            </a>
+        </nav>
+
+        <p class="menu-title library-title">YOUR LIBRARY</p>
+
+        <nav class="sidebar-nav">
+            <a href="favorites.html">
+                <span><i class="fa-solid fa-heart"></i></span> Favorites
+            </a>
+
+            <a href="playlists.html">
+                <span><i class="fa-solid fa-book"></i></span> Playlists
+            </a>
+        </nav>
+
+        <p class="menu-title library-title">INFO</p>
+
+        <nav class="sidebar-nav">
+            <a href="contact.html">
+                <span><i class="fa-solid fa-envelope"></i></span> Contact
+            </a>
+        </nav>
+
+        <a href="profile.html" class="guest-profile">
+            <div class="guest-avatar">V</div>
+            <div>
+                <p>Guest</p>
+                <small>Free plan</small>
+            </div>
+        </a>
+
+    </aside>
+
+    <main class="main-content">
+
+        <!-- TOP NAVBAR -->
+        <header class="topbar">
+
+            <form class="search-form" action="#" method="get">
+                <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="search" name="search" placeholder="Search albums...">
+            </form>
+
+            <div class="account-buttons">
+                <a href="login.html" class="login-button">Log in</a>
+                <a href="signup.html" class="signup-button">Sign up</a>
+            </div>
+
+        </header>
+
+        <!-- ALBUMS PAGE -->
+        <div class="page-content">
+
+            <section class="music-section albums-page">
+
+                <div class="section-header">
+                    <div>
+                        <p class="eyebrow">YOUR MUSIC COLLECTION</p>
+                        <h2>Explore Albums</h2>
+                    </div>
+                    <span>Discover your next favourite</span>
+                </div>
+
+                <div class="album-grid">
+
+                    <a href="album_pages/romance.html"
+                       class="album-card"
+                       data-search="romantic hits love">
+
+                        <img src="assets/images/album_cover/romantic_album_cover.jpg"
+                             alt="Romantic Hits">
+                        <h3>Romantic Hits</h3>
+                        <p>Love songs for every mood</p>
+                    </a>
+
+                    <a href="album_pages/b_classic.html"
+                       class="album-card"
+                       data-search="bollywood classics">
+
+                        <img src="assets/images/album_cover/classic_album_cover.jpg"
+                             alt="Bollywood Classics">
+                        <h3>Bollywood Classics</h3>
+                        <p>Timeless Hindi melodies</p>
+                    </a>
+
+                    <a href="album_pages/party.html"
+                       class="album-card"
+                       data-search="party mix dance">
+
+                        <img src="assets/images/album_cover/party_album_cover.jpg"
+                             alt="Party Mix">
+                        <h3>Party Mix</h3>
+                        <p>Turn up the energy</p>
+                    </a>
+
+                    <a href="album_pages/calm.html"
+                       class="album-card"
+                       data-search="calm moments chill">
+
+                        <img src="assets/images/album_cover/calm_album_cover.jpg"
+                             alt="Calm Moments">
+                        <h3>Calm Moments</h3>
+                        <p>Relax and unwind</p>
+                    </a>
+
+                    <a href="album_pages/m_stream_song.html"
+                       class="album-card"
+                       data-search="most streamed popular">
+
+                        <img src="assets/images/album_cover/most_streamed_cover.jpg"
+                             alt="Most Streamed Songs">
+                        <h3>Most Streamed Songs</h3>
+                        <p>Popular tracks of 2026</p>
+                    </a>
+
+                </div>
+            </section>
+
+        </div>
+
+        <!-- BOTTOM MUSIC PLAYER -->
+        <footer class="music-player">
+
+            <div class="now-playing">
+                <img id="currentCover"
+                     src="assets/images/Baby_Groot.jpeg"
+                     alt="Current song cover">
+
+                <div>
+                    <h4 id="currentTitle">Choose a song</h4>
+                    <p id="currentArtist">Vibely</p>
+                </div>
+
+                <button id="favoriteButton"
+                        type="button"
+                        aria-label="Add to favorites">♡</button>
+            </div>
+
+            <div class="player-center">
+
+                <div class="player-controls">
+                    <button type="button" id="previousButton"
+                            aria-label="Previous song">↶</button>
+
+                    <button type="button" id="mainPlayButton"
+                            aria-label="Play or pause">▶</button>
+
+                    <button type="button" id="nextButton"
+                            aria-label="Next song">↷</button>
+                </div>
+
+                <div class="progress-row">
+                    <span id="currentTime">0:00</span>
+
+                    <input type="range" id="progressBar"
+                           min="0" max="100" value="0"
+                           aria-label="Song progress">
+
+                    <span id="duration">0:00</span>
+                </div>
+
+            </div>
+
+            <div class="volume-control">
+                <span>🔊</span>
+
+                <input type="range" id="volumeBar"
+                       min="0" max="1" step="0.01" value="0.7"
+                       aria-label="Volume">
+            </div>
+
+            <audio id="audioPlayer"></audio>
+
+        </footer>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,590 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact Us | Vibely</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* CONTACT PAGE */
+
+        .contact-intro {
+            padding: 32px;
+            margin-bottom: 28px;
+            border-radius: 20px;
+            background: linear-gradient(
+                115deg,
+                #201532,
+                #171328 48%,
+                #131c46
+            );
+            border: 1px solid rgba(185, 145, 255, 0.13);
+        }
+
+        .contact-intro .eyebrow {
+            margin-bottom: 12px;
+        }
+
+        .contact-intro h1 {
+            font-size: clamp(30px, 4vw, 46px);
+            margin-bottom: 12px;
+        }
+
+        .contact-intro p {
+            color: #c3bdd2;
+            font-size: 15px;
+            line-height: 1.8;
+            max-width: 650px;
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .contact-panel {
+            padding: 25px;
+            border-radius: 16px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            min-width: 0;
+        }
+
+        .contact-panel h2 {
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .contact-panel > p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 22px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 17px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .contact-detail:last-child {
+            border-bottom: none;
+        }
+
+        .contact-icon {
+            width: 43px;
+            height: 43px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: rgba(139, 61, 255, 0.16);
+            color: #c5a4ff;
+            font-size: 18px;
+        }
+
+        .contact-detail h3 {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .contact-detail p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 17px;
+        }
+
+        .contact-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #e6dff4;
+        }
+
+        .contact-field input,
+        .contact-field textarea {
+            display: block;
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 9px;
+            border: 1px solid #373044;
+            background: #171421;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .contact-field input:focus,
+        .contact-field textarea:focus {
+            border-color: var(--purple);
+        }
+
+        .contact-field input::placeholder,
+        .contact-field textarea::placeholder {
+            color: #827b98;
+        }
+
+        .contact-field textarea {
+            min-height: 145px;
+            resize: vertical;
+        }
+
+        .contact-submit {
+            align-self: flex-start;
+            padding: 14px 23px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(
+                110deg,
+                var(--purple),
+                var(--blue)
+            );
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .contact-submit:hover {
+            filter: brightness(1.15);
+        }
+
+        .contact-message {
+            display: none;
+            padding: 13px;
+            border-radius: 9px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .contact-message.success {
+            display: block;
+            color: #c7f9d4;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+        }
+
+        .contact-message.error {
+            display: block;
+            color: #fecaca;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        @media (max-width: 900px) {
+            .contact-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-intro {
+                padding: 22px;
+            }
+
+            .contact-panel {
+                padding: 18px;
+            }
+
+            .contact-submit {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+
+        <a href="index.html" class="brand">
+            <img src="assets/images/vibely_image_1.png"
+                alt="Vibely Logo">
+        </a>
+
+        <p class="menu-title">BROWSE</p>
+
+        <nav class="sidebar-nav">
+
+            <a href="index.html">
+                <span><i class="fa-solid fa-house"></i></span>
+                Home
+            </a>
+
+            <a href="artists.html">
+                <span><i class="fa-solid fa-microphone-lines"></i></span>
+                Artists
+            </a>
+
+            <a href="albums.html">
+                <span><i class="fa-solid fa-compact-disc"></i></span>
+                Albums
+            </a>
+
+            <a href="categories.html">
+                <span><i class="fa-solid fa-icons"></i></span>
+                Categories
+            </a>
+
+        </nav>
+
+        <p class="menu-title library-title">YOUR LIBRARY</p>
+
+        <nav class="sidebar-nav">
+
+            <a href="favorites.html">
+                <span><i class="fa-solid fa-heart"></i></span>
+                Favorites
+            </a>
+
+            <a href="playlists.html">
+                <span><i class="fa-solid fa-book"></i></span>
+                Playlists
+            </a>
+
+        </nav>
+
+        <p class="menu-title library-title">INFO</p>
+
+        <nav class="sidebar-nav">
+
+            <a href="contact.html" class="active">
+                <span><i class="fa-solid fa-envelope"></i></span>
+                Contact
+            </a>
+
+        </nav>
+
+        <a href="profile.html" class="guest-profile">
+
+            <div class="guest-avatar">V</div>
+
+            <div>
+                <p>Guest</p>
+                <small>Free plan</small>
+            </div>
+
+        </a>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP NAVBAR -->
+        <header class="topbar">
+
+            <form class="search-form" id="searchForm" action="#">
+                <span>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+
+                <input type="search"
+                    id="searchInput"
+                    name="search"
+                    placeholder="Search Vibely...">
+            </form>
+
+            <div class="account-buttons">
+                <a href="login.html" class="login-button">Log in</a>
+                <a href="signup.html" class="signup-button">Sign up</a>
+            </div>
+
+        </header>
+
+
+        <!-- CONTACT PAGE CONTENT -->
+        <div class="page-content">
+
+            <section class="contact-intro">
+
+                <p class="eyebrow">WE'RE HERE TO HELP</p>
+
+                <h1>Get in touch with Vibely.</h1>
+
+                <p>
+                    Have a question, suggestion, or feedback about your
+                    music experience? Send us a message using the form
+                    below. We'd love to hear from you.
+                </p>
+
+            </section>
+
+
+            <section class="contact-layout">
+
+                <!-- CONTACT INFORMATION -->
+                <article class="contact-panel">
+
+                    <h2>Contact information</h2>
+
+                    <p>
+                        Learn more about this project or share your
+                        thoughts about the Vibely music player.
+                    </p>
+
+                    <div class="contact-detail">
+
+                        <div class="contact-icon">
+                            <i class="fa-solid fa-music"></i>
+                        </div>
+
+                        <div>
+                            <h3>About Vibely</h3>
+                            <p>
+                                A music player project for discovering
+                                songs, artists, albums, and moods.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="contact-detail">
+
+                        <div class="contact-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+
+                        <div>
+                            <h3>General enquiries</h3>
+                            <p>
+                                Use the contact form to enter your
+                                details and message.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="contact-detail">
+
+                        <div class="contact-icon">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+
+                        <div>
+                            <h3>Project information</h3>
+                            <p>
+                                Built using HTML5, CSS3, JavaScript,
+                                the DOM, and the HTML5 Audio API.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- CONTACT FORM -->
+                <article class="contact-panel">
+
+                    <h2>Send us a message</h2>
+
+                    <p>
+                        Fill in all the fields below.
+                    </p>
+
+                    <div id="contactMessage"
+                        class="contact-message"
+                        role="status"
+                        aria-live="polite">
+                    </div>
+
+                    <form class="contact-form"
+                        id="contactForm"
+                        method="post">
+
+                        <div class="contact-field">
+
+                            <label for="contactName">Full name</label>
+
+                            <input type="text"
+                                id="contactName"
+                                name="name"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                                required>
+
+                        </div>
+
+                        <div class="contact-field">
+
+                            <label for="contactEmail">Email address</label>
+
+                            <input type="email"
+                                id="contactEmail"
+                                name="email"
+                                placeholder="Enter your email address"
+                                autocomplete="email"
+                                required>
+
+                        </div>
+
+                        <div class="contact-field">
+
+                            <label for="contactSubject">Subject</label>
+
+                            <input type="text"
+                                id="contactSubject"
+                                name="subject"
+                                placeholder="What is your message about?"
+                                required>
+
+                        </div>
+
+                        <div class="contact-field">
+
+                            <label for="contactText">Your message</label>
+
+                            <textarea id="contactText"
+                                name="message"
+                                placeholder="Write your message here..."
+                                required></textarea>
+
+                        </div>
+
+                        <button type="submit" class="contact-submit">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Send message
+                        </button>
+
+                    </form>
+
+                </article>
+
+            </section>
+
+        </div>
+
+
+        <!-- BOTTOM MUSIC PLAYER -->
+        <footer class="music-player">
+
+            <div class="now-playing">
+
+                <img id="currentCover"
+                    src="assets/images/Baby_Groot.jpeg"
+                    alt="Current song cover">
+
+                <div>
+                    <h4 id="currentTitle">Choose a song</h4>
+                    <p id="currentArtist">Vibely</p>
+                </div>
+
+                <button id="favoriteButton"
+                    type="button"
+                    aria-label="Add to favorites">♡</button>
+
+            </div>
+
+            <div class="player-center">
+
+                <div class="player-controls">
+
+                    <button type="button"
+                        id="previousButton"
+                        aria-label="Previous song">↶</button>
+
+                    <button type="button"
+                        id="mainPlayButton"
+                        aria-label="Play or pause">▶</button>
+
+                    <button type="button"
+                        id="nextButton"
+                        aria-label="Next song">↷</button>
+
+                </div>
+
+                <div class="progress-row">
+
+                    <span id="currentTime">0:00</span>
+
+                    <input type="range"
+                        id="progressBar"
+                        min="0"
+                        max="100"
+                        value="0"
+                        aria-label="Song progress">
+
+                    <span id="duration">0:00</span>
+
+                </div>
+
+            </div>
+
+            <div class="volume-control">
+                <span>🔊</span>
+
+                <input type="range"
+                    id="volumeBar"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value="0.7"
+                    aria-label="Volume">
+            </div>
+
+            <audio id="audioPlayer"></audio>
+
+        </footer>
+
+    </main>
+
+
+    <script src="assets/js/app.js"></script>
+
+    <script>
+        // FRONTEND-ONLY CONTACT FORM
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const form = document.getElementById("contactForm");
+            const message = document.getElementById("contactMessage");
+
+            form.addEventListener("submit", function (event) {
+
+                event.preventDefault();
+
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+
+                message.className = "contact-message success";
+
+                message.textContent =
+                    "Thank you for contacting Vibely! " +
+                    "Your form was validated successfully. " +
+                    "This demo does not send or store messages.";
+
+                form.reset();
+
+            });
+
+        });
+    </script>
+
+</body>
+</html>

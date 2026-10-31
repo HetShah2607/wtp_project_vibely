@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-black">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify - Web Player: Music for everyone</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        spotify: {
+                            green: '#1DB954',
+                            darkgreen: '#1aa34a',
+                            black: '#121212',
+                            darkgray: '#181818',
+                            lightgray: '#282828',
+                            muted: '#b3b3b3',
+                            hover: '#2a2a2a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for sleek Spotify look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #282828;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #535353;
+        }
+        .equalizer-bar {
+            animation: pulse-bar 1.2s ease-in-out infinite alternate;
+        }
+        @keyframes pulse-bar {
+            0% { height: 4px; }
+            100% { height: 20px; }
+        }
+        .eq-1 { animation-delay: 0.1s; }
+        .eq-2 { animation-delay: 0.3s; }
+        .eq-3 { animation-delay: 0.2s; }
+        .eq-4 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body class="h-full text-white font-sans antialiased overflow-hidden flex flex-col bg-black">
+
+    <div id="app-layout" class="flex flex-1 overflow-hidden p-2 gap-2">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <aside id="sidebar" class="w-64 bg-black flex flex-col gap-2 shrink-0 select-none">
+            <!-- Top Logo & Navigation -->
+            <div class="bg-spotify-darkgray rounded-lg p-5 flex flex-col gap-4">
+                <div class="flex items-center gap-2 px-2 cursor-pointer" onclick="router.navigate('home')">
+                    <i class="fa-brands fa-spotify text-3xl text-white"></i>
+                    <span class="text-xl font-bold tracking-tight text-white">Spotify</span>
+                </div>
+                <nav class="flex flex-col gap-1 mt-2">
+                    <a href="#" onclick="router.navigate('home')" id="nav-home" class="flex items-center gap-4 px-3 py-2.5 rounded-md font-semibold text-spotify-muted hover:text-white transition group">
+                        <i class="fa-solid fa-house text-xl w-6"></i>
+                        <span>Home</span>
+                    </a>
+                    <a href="#" onclick="router.navigate('categories')" id="nav-categories" class="flex items-center gap-4 px-3 py-2.5 rounded-md font-semibold text-spotify-muted hover:text-white transition group">
+                        <i class="fa-solid fa-icons text-xl w-6"></i>
+                        <span>Categories</span>
+                    </a>
+                    <a href="#" onclick="router.navigate('artists')" id="nav-artists" class="flex items-center gap-4 px-3 py-2.5 rounded-md font-semibold text-spotify-muted hover:text-white transition group">
+                        <i class="fa-solid fa-microphone-lines text-xl w-6"></i>
+                        <span>Artists</span>
+                    </a>
+                    <a href="#" onclick="router.navigate('albums')" id="nav-albums" class="flex items-center gap-4 px-3 py-2.5 rounded-md font-semibold text-spotify-muted hover:text-white transition group">
+                        <i class="fa-solid fa-compact-disc text-xl w-6"></i>
+                        <span>Albums</span>
+                    </a>
+                    <a href="#" onclick="router.navigate('favorites')" id="nav-favorites" class="flex items-center gap-4 px-3 py-2.5 rounded-md font-semibold text-spotify-muted hover:text-white transition group">
+                        <i class="fa-solid fa-heart text-xl w-6"></i>
+                        <span>Liked Songs</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Library / Secondary Nav & Info -->
+            <div class="bg-spotify-darkgray rounded-lg p-4 flex-1 flex flex-col justify-between overflow-y-auto">
+                <div class="flex flex-col gap-3">
+                    <div class="flex items-center justify-between px-2">
+                        <span class="font-bold text-spotify-muted flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-book text-base"></i> Your Library
+                        </span>
+                        <button onclick="router.navigate('about')" class="text-spotify-muted hover:text-white text-xs px-2 py-1 bg-spotify-lightgray rounded-full">About</button>
+                    </div>
+                    <!-- Quick Playlist Box -->
+                    <div class="bg-spotify-lightgray p-4 rounded-lg flex flex-col gap-2 mt-2">
+                        <h3 class="font-semibold text-sm">Create your first playlist</h3>
+                        <p class="text-xs text-spotify-muted">It's easy, we'll help you</p>
+                        <button onclick="showToast('Playlist creator coming soon!')" class="mt-2 bg-white text-black font-semibold text-xs px-4 py-2 rounded-full w-max hover:scale-105 transition">Create playlist</button>
+                    </div>
+                    <!-- Quick Contact Box -->
+                    <div class="bg-spotify-lightgray p-4 rounded-lg flex flex-col gap-2 mt-2">
+                        <h3 class="font-semibold text-sm">Let's find some podcasts</h3>
+                        <p class="text-xs text-spotify-muted">We'll keep you updated on new episodes</p>
+                        <button onclick="router.navigate('contact')" class="mt-2 bg-white text-black font-semibold text-xs px-4 py-2 rounded-full w-max hover:scale-105 transition">Contact Us</button>
+                    </div>
+                </div>
+
+                <!-- Footer Links -->
+                <div class="pt-6 px-2 text-[11px] text-spotify-muted flex flex-col gap-2">
+                    <div class="flex flex-wrap gap-x-3 gap-y-1">
+                        <a href="#" class="hover:underline">Legal</a>
+                        <a href="#" class="hover:underline">Privacy Center</a>
+                        <a href="#" class="hover:underline">Cookies</a>
+                        <a href="#" onclick="router.navigate('about'); return false;" class="hover:underline">About</a>
+                        <a href="#" onclick="router.navigate('contact'); return false;" class="hover:underline">Contact</a>
+                    </div>
+                    <p class="text-spotify-muted mt-2">© 2026 Spotify AB (Frontend Clone)</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main id="main-content-area" class="flex-1 bg-gradient-to-b from-[#1e1e1e] to-spotify-black rounded-lg overflow-y-auto relative flex flex-col">
+            
+            <!-- TOP HEADER -->
+            <header class="sticky top-0 z-30 bg-[#121212]/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+                <!-- Navigation History / Search -->
+                <div class="flex items-center gap-4">
+                    <div class="flex gap-2">
+                        <button onclick="history.back()" class="w-8 h-8 rounded-full bg-black/70 flex items-center justify-center text-spotify-muted hover:text-white transition">
+                            <i class="fa-solid fa-chevron-left text-sm"></i>
+                        </button>
+                        <button onclick="history.forward()" class="w-8 h-8 rounded-full bg-black/70 flex items-center justify-center text-spotify-muted hover:text-white transition">
+                            <i class="fa-solid fa-chevron-right text-sm"></i>
+                        </button>
+                    </div>
+                    <div id="search-container" class="relative hidden sm:block">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-spotify-muted text-sm"></i>
+                        <input type="text" id="global-search-input" oninput="handleGlobalSearch(this.value)" placeholder="What do you want to play?" class="bg-spotify-lightgray text-sm text-white pl-10 pr-4 py-2 rounded-full w-72 focus:outline-none focus:ring-2 focus:ring-white transition">
+                    </div>
+                </div>
+
+                <!-- User Auth Actions / Profile -->
+                <div class="flex items-center gap-3">
+                    <div id="auth-guest-controls" class="flex items-center gap-3">
+                        <button onclick="router.navigate('signup')" class="text-spotify-muted font-bold text-sm px-4 py-2 hover:text-white hover:scale-105 transition">Sign up</button>
+                        <button onclick="router.navigate('login')" class="bg-white text-black font-bold text-sm px-6 py-2.5 rounded-full hover:scale-105 transition shadow-lg">Log in</button>
+                    </div>
+                    <div id="auth-user-controls" class="hidden items-center gap-3">
+                        <button onclick="showToast('Premium account active!')" class="bg-white text-black font-bold text-xs px-4 py-2 rounded-full hover:scale-105 transition hidden md:block">Explore Premium</button>
+                        <div class="flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded-full border border-spotify-lightgray">
+                            <div id="user-avatar" class="w-7 h-7 rounded-full bg-spotify-green text-black font-bold flex items-center justify-center text-xs">U</div>
+                            <span id="user-username-display" class="text-xs font-semibold">User</span>
+                            <button onclick="logoutUser()" title="Log out" class="text-spotify-muted hover:text-white ml-2"><i class="fa-solid fa-right-from-bracket text-xs"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DYNAMIC VIEW CONTAINER -->
+            <div id="view-container" class="flex-1 px-6 pb-28 pt-2">
+                <!-- Rendered dynamically by SPA router -->
+            </div>
+        </main>
+    </div>
+
+    <!-- PERSISTENT BOTTOM MUSIC PLAYER BAR -->
+    <footer id="bottom-player" class="h-20 bg-black px-4 flex items-center justify-between shrink-0 border-t border-spotify-lightgray/30 z-40 select-none">
+        <!-- Currently Playing Song Info -->
+        <div class="flex items-center gap-3 w-1/4 min-w-[180px]">
+            <img id="player-cover" src="https://placehold.co/56x56/282828/ffffff?text=♪" alt="Album Art" class="w-14 h-14 rounded-md object-cover shadow">
+            <div class="flex flex-col justify-center overflow-hidden">
+                <span id="player-title" class="text-sm font-semibold truncate hover:underline cursor-pointer text-white">Select a song</span>
+                <span id="player-artist" class="text-xs text-spotify-muted truncate hover:underline cursor-pointer">Spotify Artist</span>
+            </div>
+            <button id="player-like-btn" onclick="toggleCurrentSongLike()" class="text-spotify-muted hover:text-white ml-2 text-lg transition">
+                <i class="fa-regular fa-heart"></i>
+            </button>
+        </div>
+
+        <!-- Playback Controls & Scrubber -->
+        <div class="flex flex-col items-center gap-1 w-2/4 max-w-xl">
+            <div class="flex items-center gap-6">
+                <button id="shuffle-btn" onclick="toggleShuffle()" class="text-spotify-muted hover:text-white text-base transition" title="Enable Shuffle">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button onclick="playPreviousSong()" class="text-spotify-muted hover:text-white text-base transition" title="Previous">
+                    <i class="fa-solid fa-backward-step"></i>
+                </button>
+                <button id="play-pause-btn" onclick="togglePlayPause()" class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition shadow">
+                    <i class="fa-solid fa-play text-sm ml-0.5" id="play-icon"></i>
+                </button>
+                <button onclick="playNextSong()" class="text-spotify-muted hover:text-white text-base transition" title="Next">
+                    <i class="fa-solid fa-forward-step"></i>
+                </button>
+                <button id="repeat-btn" onclick="toggleRepeat()" class="text-spotify-muted hover:text-white text-base transition" title="Enable Repeat">
+                    <i class="fa-solid fa-repeat"></i>
+                </button>
+            </div>
+            <div class="flex items-center gap-2 w-full text-xs text-spotify-muted">
+                <span id="current-time">0:00</span>
+                <input type="range" id="progress-bar" min="0" max="100" value="0" oninput="seekAudio(this.value)" class="w-full h-1 bg-spotify-lightgray rounded-lg appearance-none cursor-pointer accent-white hover:accent-spotify-green">
+                <span id="total-duration">0:00</span>
+            </div>
+        </div>
+
+        <!-- Extra Controls (Volume & Equalizer) -->
+        <div class="flex items-center justify-end gap-3 w-1/4 min-w-[180px]">
+            <div id="equalizer-indicator" class="hidden items-end gap-1 h-5 w-5">
+                <div class="w-1 bg-spotify-green rounded-full equalizer-bar eq-1"></div>
+                <div class="w-1 bg-spotify-green rounded-full equalizer-bar eq-2"></div>
+                <div class="w-1 bg-spotify-green rounded-full equalizer-bar eq-3"></div>
+                <div class="w-1 bg-spotify-green rounded-full equalizer-bar eq-4"></div>
+            </div>
+            <button onclick="router.navigate('categories')" class="text-spotify-muted hover:text-white text-sm" title="Categories">
+                <i class="fa-solid fa-list-ul"></i>
+            </button>
+            <button onclick="toggleMute()" id="mute-btn" class="text-spotify-muted hover:text-white text-sm">
+                <i class="fa-solid fa-volume-high"></i>
+            </button>
+            <input type="range" id="volume-bar" min="0" max="1" step="0.05" value="0.7" oninput="setVolume(this.value)" class="w-20 h-1 bg-spotify-lightgray rounded-lg appearance-none cursor-pointer accent-white hover:accent-spotify-green">
+        </div>
+    </footer>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-24 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        // --- APPLICATION DATA & MOCK DATABASE ---
+        const MOCK_DATA = {
+            artists: [
+                { id: 'art-1', name: 'The Weeknd', genre: 'R&B / Synth-pop', image: 'https://placehold.co/300x300/1e1e1e/1DB954?text=The+Weeknd', songsCount: 34, bio: 'Canadian singer, songwriter, and record producer known for his sonic versatility and dark lyricism.' },
+                { id: 'art-2', name: 'Taylor Swift', genre: 'Pop / Country', image: 'https://placehold.co/300x300/282828/ffffff?text=Taylor+Swift', songsCount: 48, bio: 'Globally acclaimed American singer-songwriter whose narrative songwriting spans multiple genres.' },
+                { id: 'art-3', name: 'Arijit Singh', genre: 'Bollywood / Romance', image: 'https://placehold.co/300x300/181818/1DB954?text=Arijit+Singh', songsCount: 62, bio: 'Indian playback singer and musician who is considered one of the most successful playback singers.' },
+                { id: 'art-4', name: 'Dua Lipa', genre: 'Dance / Pop', image: 'https://placehold.co/300x300/3e3e3e/ffffff?text=Dua+Lipa', songsCount: 26, bio: 'English and Albanian singer and songwriter renowned for her disco-pop anthems.' },
+                { id: 'art-5', name: 'Imagine Dragons', genre: 'Rock / Alternative', image: 'https://placehold.co/300x300/222222/1DB954?text=Imagine+Dragons', songsCount: 31, bio: 'American pop rock band from Las Vegas, Nevada, known for stadium-filling anthems.' },
+                { id: 'art-6', name: 'Bad Bunny', genre: 'Reggaeton / Latin', image: 'https://placehold.co/300x300/121212/ffffff?text=Bad+Bunny', songsCount: 40, bio: 'Puerto Rican rapper and singer, often called the King of Latin Trap.' }
+            ],
+            albums: [
+                { id: 'alb-1', title: 'After Hours', artist: 'The Weeknd', year: 2020, type: 'Singer Album', cover: 'https://placehold.co/300x300/1a1a1a/1DB954?text=After+Hours', songs: ['song-1', 'song-2'] },
+                { id: 'alb-2', title: 'Midnights', artist: 'Taylor Swift', year: 2022, type: 'Singer Album', cover: 'https://placehold.co/300x300/2c2c2c/ffffff?text=Midnights', songs: ['song-3', 'song-4'] },
+                { id: 'alb-3', title: 'Aashiqui 2 (Movie)', artist: 'Arijit Singh', year: 2013, type: 'Movie Album', cover: 'https://placehold.co/300x300/111111/1DB954?text=Aashiqui+2', songs: ['song-5', 'song-6'] },
+                { id: 'alb-4', title: 'Future Nostalgia', artist: 'Dua Lipa', year: 2020, type: 'Singer Album', cover: 'https://placehold.co/300x300/333333/ffffff?text=Future+Nostalgia', songs: ['song-7'] },
+                { id: 'alb-5', title: 'Interstellar (OST)', artist: 'Hans Zimmer', year: 2014, type: 'Movie Album', cover: 'https://placehold.co/300x300/151515/1DB954?text=Interstellar', songs: ['song-8'] },
+                { id: 'alb-6', title: 'Un Verano Sin Ti', artist: 'Bad Bunny', year: 2022, type: 'Singer Album', cover: 'https://placehold.co/300x300/222222/ffffff?text=Un+Verano+Sin+Ti', songs: ['song-9'] }
+            ],
+            categories: [
+                { id: 'cat-romance', name: 'Romance', color: 'from-pink-600 to-rose-900', desc: 'Melodic love songs for your special moments' },
+                { id: 'cat-party', name: 'Party', color: 'from-purple-600 to-indigo-900', desc: 'High energy club anthems and dance hits' },
+                { id: 'cat-gym', name: 'Gym / Exercise', color: 'from-amber-600 to-red-900', desc: 'Pumping beats to power through workouts' },
+                { id: 'cat-calm', name: 'Calm & Relax', color: 'from-teal-600 to-blue-900', desc: 'Peaceful acoustic and ambient sounds' },
+                { id: 'cat-chill', name: 'Chill Vibes', color: 'from-emerald-600 to-teal-900', desc: 'Lay back and unwind with smooth grooves' },
+                { id: 'cat-focus', name: 'Focus & Study', color: 'from-blue-600 to-slate-900', desc: 'Instrumental and deep focus soundscapes' }
+            ],
+            songs: [
+                { id: 'song-1', title: 'Blinding Lights', artist: 'The Weeknd', album: 'After Hours', duration: '3:20', category: 'party', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', cover: 'https://placehold.co/300x300/1a1a1a/1DB954?text=Blinding+Lights' },
+                { id: 'song-2', title: 'Save Your Tears', artist: 'The Weeknd', album: 'After Hours', duration: '3:35', category: 'chill', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', cover: 'https://placehold.co/300x300/1e1e1e/1DB954?text=Save+Your+Tears' },
+                { id: 'song-3', title: 'Anti-Hero', artist: 'Taylor Swift', album: 'Midnights', duration: '3:21', category: 'chill', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', cover: 'https://placehold.co/300x300/2c2c2c/ffffff?text=Anti-Hero' },
+                { id: 'song-4', title: 'Lavender Haze', artist: 'Taylor Swift', album: 'Midnights', duration: '3:22', category: 'romance', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', cover: 'https://placehold.co/300x300/282828/ffffff?text=Lavender+Haze' },
+                { id: 'song-5', title: 'Tum Hi Ho', artist: 'Arijit Singh', album: 'Aashiqui 2', duration: '4:22', category: 'romance', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3', cover: 'https://placehold.co/300x300/111111/1DB954?text=Tum+Hi+Ho' },
+                { id: 'song-6', title: 'Chahun Main Ya Naa', artist: 'Arijit Singh', album: 'Aashiqui 2', duration: '5:04', category: 'romance', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', cover: 'https://placehold.co/300x300/151515/1DB954?text=Chahun+Main' },
+                { id: 'song-7', title: 'Levitating', artist: 'Dua Lipa', album: 'Future Nostalgia', duration: '3:23', category: 'party', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3', cover: 'https://placehold.co/300x300/333333/ffffff?text=Levitating' },
+                { id: 'song-8', title: 'Cornfield Chase', artist: 'Hans Zimmer', album: 'Interstellar (OST)', duration: '2:06', category: 'focus', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', cover: 'https://placehold.co/300x300/181818/1DB954?text=Interstellar' },
+                { id: 'song-9', title: 'Tití Me Preguntó', artist: 'Bad Bunny', album: 'Un Verano Sin Ti', duration: '4:03', category: 'gym', audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', cover: 'https://placehold.co/300x300/222222/ffffff?text=Titi+Me+Pregunto' }
+            ]
+        };
+
+        // --- APP STATE ---
+        let appState = {
+            currentView: 'home',
+            viewParam: null, // e.g. artistId or categoryId
+            currentUser: JSON.parse(localStorage.getItem('spotify_user')) || null,
+            favorites: JSON.parse(localStorage.getItem('spotify_favorites')) || ['song-1', 'song-5'],
+            currentSongIndex: 0,
+            isPlaying: false,
+            isShuffle: false,
+            isRepeat: false,
+            isMuted: false,
+            volume: 0.7,
+            audio: new Audio()
+        };
+
+        // --- ROUTER & NAVIGATION ---
+        const router = {
+            navigate: function(view, param = null) {
+                appState.currentView = view;
+                appState.viewParam = param;
+                window.scrollTo(0, 0);
+                document.getElementById('main-content-area').scrollTop = 0;
+                renderView();
+                updateActiveNav();
+            }
+        };
+
+        function updateActiveNav() {
+            ['home', 'categories', 'artists', 'albums', 'favorites'].forEach(view => {
+                const el = document.getElementById(`nav-${view}`);
+                if (el) {
+                    if (appState.currentView === view) {
+                        el.classList.add('bg-spotify-lightgray', 'text-white');
+                        el.classList.remove('text-spotify-muted');
+                    } else {
+                        el.classList.remove('bg-spotify-lightgray', 'text-white');
+                        el.classList.add('text-spotify-muted');
+                    }
+                }
+            });
+        }
+
+        // --- RENDER VIEW DISPATCHER ---
+        function renderView() {
+            const container = document.getElementById('view-container');
+            container.innerHTML = '';
+
+            // Update Auth UI state
+            const guestControls = document.getElementById('auth-guest-controls');
+            const userControls = document.getElementById('auth-user-controls');
+            if (appState.currentUser) {
+                guestControls.classList.add('hidden');
+                guestControls.classList.remove('flex');
+                userControls.classList.remove('hidden');
+                userControls.classList.add('flex');
+                document.getElementById('user-username-display').innerText = appState.currentUser.name || 'User';
+                document.getElementById('user-avatar').innerText = (appState.currentUser.name || 'U').charAt(0).toUpperCase();
+            } else {
+                guestControls.classList.remove('hidden');
+                guestControls.classList.add('flex');
+                userControls.classList.add('hidden');
+                userControls.classList.remove('flex');
+            }
+
+            switch(appState.currentView) {
+                case 'home':
+                    renderHomeView(container);
+                    break;
+                case 'categories':
+                    renderCategoriesView(container);
+                    break;
+                case 'artists':
+                    renderArtistsView(container);
+                    break;
+                case 'albums':
+                    renderAlbumsView(container);
+                    break;
+                case 'favorites':
+                    renderFavoritesView(container);
+                    break;
+                case 'signup':
+                    renderSignupView(container);
+                    break;
+                case 'login':
+                    renderLoginView(container);
+                    break;
+                case 'about':
+                    renderAboutView(container);
+                    break;
+                case 'contact':
+                    renderContactView(container);
+                    break;
+                case 'artist-detail':
+                    renderArtistDetailView(container, appState.viewParam);
+                    break;
+                case 'category-detail':
+                    renderCategoryDetailView(container, appState.viewParam);
+                    break;
+                default:
+                    renderHomeView(container);
+            }
+        }
+
+        // --- STREAMING_CHUNK:Rendering Home View... ---
+        function renderHomeView(container) {
+            const hour = new Date().getHours();
+            let greeting = 'Good evening';
+            if (hour < 12) greeting = 'Good morning';
+            else if (hour < 18) greeting = 'Good afternoon';
+
+            const name = appState.currentUser ? appState.currentUser.name : 'Music Lover';
+
+            let html = `
+                <div class="flex flex-col gap-6 animate-fadeIn">
+                    <!-- Greeting Banner -->
+                    <div class="flex flex-col gap-4 mt-2">
+                        <h1 class="text-3xl font-extrabold tracking-tight">${greeting}, ${name}</h1>
+                        <!-- Quick Access Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            `;
+
+            // Top 6 quick pick items
+            const quickPicks = MOCK_DATA.songs.slice(0, 6);
+            quickPicks.forEach(song => {
+                html += `
+                    <div onclick="playSongById('${song.id}')" class="flex items-center bg-white/5 hover:bg-white/10 rounded-md overflow-hidden cursor-pointer group transition shadow">
+                        <img src="${song.cover}" class="w-16 h-16 object-cover" alt="${song.title}">
+                        <div class="px-4 flex-1 truncate">
+                            <h4 class="font-bold text-sm truncate text-white">${song.title}</h4>
+                        </div>
+                        <button class="w-10 h-10 rounded-full bg-spotify-green text-black flex items-center justify-center shadow-lg mr-4 opacity-0 group-hover:opacity-100 transition transform translate-y-2 group-hover:translate-y-0">
+                            <i class="fa-solid fa-play ml-0.5"></i>
+                        </button>
+                    </div>
+                `;
+            });
+
+            html += `
+                        </div>
+                    </div>
+
+                    <!-- Recently Played / Made For You -->
+                    <div class="flex flex-col gap-4 mt-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-xl font-bold hover:underline cursor-pointer">Made For You</h2>
+                            <span class="text-xs font-bold text-spotify-muted hover:underline cursor-pointer">Show all</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
+            `;
+
+            MOCK_DATA.songs.forEach(song => {
+                const isFav = appState.favorites.includes(song.id);
+                html += `
+                    <div class="bg-spotify-darkgray/60 hover:bg-spotify-lightgray p-4 rounded-lg flex flex-col gap-3 cursor-pointer group transition relative" onclick="playSongById('${song.id}')">
+                        <div class="relative aspect-square shadow-lg rounded-md overflow-hidden">
+                            <img src="${song.cover}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" alt="${song.title}">
+                            <button onclick="event.stopPropagation(); playSongById('${song.id}')" class="absolute bottom-2 right-2 w-12 h-12 rounded-full bg-spotify-green text-black flex items-center justify-center shadow-xl opacity-0 group-hover:opacity-100 transition transform translate-y-2 group-hover:translate-y-0 hover:scale-105">
+                                <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                            </button>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <h3 class="font-bold text-sm truncate text-white">${song.title}</h3>
+                            <p class="text-xs text-spotify-muted truncate">${song.artist}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                        </div>
+                    </div>
+
+                    <!-- Popular Artists Section -->
+                    <div class="flex flex-col gap-4 mt-6">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-xl font-bold hover:underline cursor-pointer" onclick="router.navigate('artists')">Popular Artists</h2>
+                            <span class="text-xs font-bold text-spotify-muted hover:underline cursor-pointer" onclick="router.navigate('artists')">Show all</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
+            `;
+
+            MOCK_DATA.artists.forEach(artist => {
+                html += `
+                    <div class="bg-spotify-darkgray/60 hover:bg-spotify-lightgray p-4 rounded-lg flex flex-col items-center text-center gap-3 cursor-pointer group transition" onclick="router.navigate('artist-detail', '${artist.id}')">
+                        <img src="${artist.image}" class="w-full aspect-square rounded-full object-cover shadow-xl group-hover:scale-105 transition duration-300" alt="${artist.name}">
+                        <div class="flex flex-col gap-1 w-full">
+                            <h3 class="font-bold text-sm truncate text-white">${artist.name}</h3>
+                            <p class="text-xs text-spotify-muted">${artist.songsCount} songs</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Categories View... ---
+        function renderCategoriesView(container) {
+            let html = `
+                <div class="flex flex-col gap-6 animate-fadeIn">
+                    <h1 class="text-2xl font-extrabold">All Categories</h1>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            `;
+
+            MOCK_DATA.categories.forEach(cat => {
+                html += `
+                    <div onclick="router.navigate('category-detail', '${cat.id}')" class="h-44 rounded-lg bg-gradient-to-br ${cat.color} p-5 cursor-pointer relative overflow-hidden group shadow-lg hover:scale-[1.02] transition">
+                        <h3 class="text-xl font-extrabold text-white">${cat.name}</h3>
+                        <p class="text-xs text-white/80 mt-1">${cat.desc}</p>
+                        <div class="absolute -bottom-4 -right-4 w-28 h-28 bg-white/10 rounded-full blur-xl group-hover:scale-125 transition duration-500"></div>
+                        <i class="fa-solid fa-music absolute bottom-4 right-4 text-4xl text-white/20 group-hover:rotate-12 transition duration-300"></i>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Category Detail View... ---
+        function renderCategoryDetailView(container, catId) {
+            const category = MOCK_DATA.categories.find(c => c.id === catId) || MOCK_DATA.categories[0];
+            const matchingSongs = MOCK_DATA.songs.filter(s => s.category === catId || Math.random() > 0.4);
+
+            let html = `
+                <div class="flex flex-col gap-6 animate-fadeIn">
+                    <div class="h-60 rounded-xl bg-gradient-to-br ${category.color} p-8 flex flex-col justify-end shadow-2xl">
+                        <span class="text-xs uppercase font-bold tracking-wider text-white/80">Category Playlist</span>
+                        <h1 class="text-5xl font-black text-white mt-2">${category.name}</h1>
+                        <p class="text-sm text-white/90 mt-2">${category.desc}</p>
+                        <p class="text-xs text-white/70 mt-1">${matchingSongs.length} songs available</p>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <h3 class="text-lg font-bold">Songs in ${category.name}</h3>
+            `;
+
+            matchingSongs.forEach((song, idx) => {
+                html += `
+                    <div onclick="playSongById('${song.id}')" class="flex items-center justify-between p-3 rounded-md hover:bg-white/10 cursor-pointer group transition">
+                        <div class="flex items-center gap-4">
+                            <span class="w-6 text-center text-spotify-muted text-sm font-semibold">${idx + 1}</span>
+                            <img src="${song.cover}" class="w-12 h-12 rounded object-cover" alt="${song.title}">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-sm text-white group-hover:text-spotify-green transition">${song.title}</span>
+                                <span class="text-xs text-spotify-muted">${song.artist}</span>
+                            </div>
+                        </div>
+                        <span class="text-xs text-spotify-muted">${song.duration}</span>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Artists View... ---
+        function renderArtistsView(container) {
+            let html = `
+                <div class="flex flex-col gap-6 animate-fadeIn">
+                    <div class="flex flex-col gap-1">
+                        <h1 class="text-2xl font-extrabold">Popular Artists & Singers</h1>
+                        <p class="text-sm text-spotify-muted">Explore singers and the count of songs created by them</p>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            `;
+
+            MOCK_DATA.artists.forEach(artist => {
+                html += `
+                    <div class="bg-spotify-darkgray/60 hover:bg-spotify-lightgray p-5 rounded-lg flex flex-col items-center text-center gap-4 cursor-pointer group transition shadow-lg" onclick="router.navigate('artist-detail', '${artist.id}')">
+                        <img src="${artist.image}" class="w-full aspect-square rounded-full object-cover shadow-2xl group-hover:scale-105 transition duration-300" alt="${artist.name}">
+                        <div class="flex flex-col gap-1 w-full">
+                            <h3 class="font-bold text-base text-white truncate">${artist.name}</h3>
+                            <span class="text-xs font-semibold text-spotify-green">${artist.genre}</span>
+                            <span class="text-xs text-spotify-muted mt-1">${artist.songsCount} songs created</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Artist Detail View... ---
+        function renderArtistDetailView(container, artistId) {
+            const artist = MOCK_DATA.artists.find(a => a.id === artistId) || MOCK_DATA.artists[0];
+            const artistSongs = MOCK_DATA.songs.filter(s => s.artist === artist.name) || MOCK_DATA.songs.slice(0, 3);
+
+            let html = `
+                <div class="flex flex-col gap-6 animate-fadeIn">
+                    <div class="flex flex-col md:flex-row items-center md:items-end gap-6 bg-gradient-to-b from-blue-900/60 to-spotify-black p-8 rounded-xl shadow-2xl">
+                        <img src="${artist.image}" class="w-48 h-48 rounded-full object-cover shadow-2xl border-4 border-black" alt="${artist.name}">
+                        <div class="flex flex-col gap-2 text-center md:text-left">
+                            <span class="text-xs uppercase font-bold text-spotify-green flex items-center justify-center md:justify-start gap-1">
+                                <i class="fa-solid fa-certificate">Verified Artist</i>
+                            </span>
+                            <h1 class="text-5xl font-black">${artist.name}</h1>
+                            <p class="text-sm text-spotify-muted max-w-xl">${artist.bio}</p>
+                            <p class="text-xs font-semibold text-white mt-1">${artist.songsCount} Total Songs Created &bull; Genre: ${artist.genre}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-4 mt-4">
+                        <h2 class="text-xl font-bold">Popular Songs by ${artist.name}</h2>
+                        <div class="flex flex-col gap-2">
+            `;
+
+            if (artistSongs.length === 0) {
+                html += `<p class="text-spotify-muted text-sm py-4">No specific tracks listed in this preview, featuring global catalog:</p>`;
+                MOCK_DATA.songs.slice(0, 3).forEach((song, idx) => {
+                    html += `
+                        <div onclick="playSongById('${song.id}')" class="flex items-center justify-between p-3 rounded-md hover:bg-white/10 cursor-pointer group transition">
+                            <div class="flex items-center gap-4">
+                                <span class="w-6 text-center text-spotify-muted text-sm font-semibold">${idx + 1}</span>
+                                <img src="${song.cover}" class="w-12 h-12 rounded object-cover" alt="${song.title}">
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-sm text-white group-hover:text-spotify-green transition">${song.title}</span>
+                                    <span class="text-xs text-spotify-muted">${artist.name}</span>
+                                </div>
+                            </div>
+                            <span class="text-xs text-spotify-muted">${song.duration}</span>
+                        </div>
+                    `;
+                });
+            } else {
+                artistSongs.forEach((song, idx) => {
+                    html += `
+                        <div onclick="playSongById('${song.id}')" class="flex items-center justify-between p-3 rounded-md hover:bg-white/10 cursor-pointer group transition">
+                            <div class="flex items-center gap-4">
+                                <span class="w-6 text-center text-spotify-muted text-sm font-semibold">${idx + 1}</span>
+                                <img src="${song.cover}" class="w-12 h-12 rounded object-cover" alt="${song.title}">
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-sm text-white group-hover:text-spotify-green transition">${song.title}</span>
+                                    <span class="text-xs text-spotify-muted">${song.album}</span>
+                                </div>
+                            </div>
+                            <span class="text-xs text-spotify-muted">${song.duration}</span>
+                        </div>
+                    `;
+                });
+            }
+
+            html += `
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Albums View... ---
+        function renderAlbumsView(container) {
+            let html = `
+                <div class="flex flex-col gap-6 animate-fadeIn">
+                    <div class="flex flex-col gap-1">
+                        <h1 class="text-2xl font-extrabold">Albums & Iconic Movie Soundtracks</h1>
+                        <p class="text-sm text-spotify-muted">Discover popular singer song albums and legendary movie albums</p>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            `;
+
+            MOCK_DATA.albums.forEach(album => {
+                html += `
+                    <div class="bg-spotify-darkgray/60 hover:bg-spotify-lightgray p-4 rounded-lg flex flex-col gap-3 cursor-pointer group transition shadow-lg" onclick="showAlbumDetail('${album.id}')">
+                        <div class="relative aspect-square shadow-xl rounded-md overflow-hidden">
+                            <img src="${album.cover}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" alt="${album.title}">
+                            <button onclick="event.stopPropagation(); showAlbumDetail('${album.id}')" class="absolute bottom-2 right-2 w-12 h-12 rounded-full bg-spotify-green text-black flex items-center justify-center shadow-2xl opacity-0 group-hover:opacity-100 transition transform translate-y-2 group-hover:translate-y-0">
+                                <i class="fa-solid fa-play text-lg ml-0.5"></i>
+                            </button>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <h3 class="font-bold text-sm truncate text-white">${album.title}</h3>
+                            <p class="text-xs text-spotify-muted">${album.year} &bull; ${album.artist}</p>
+                            <span class="text-[10px] uppercase font-bold text-spotify-green mt-0.5">${album.type}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        function showAlbumDetail(albumId) {
+            const album = MOCK_DATA.albums.find(a => a.id === albumId);
+            if (!album) return;
+            const container = document.getElementById('view-container');
+            let html = `
+                <div class="flex flex-col gap-6 animate-fadeIn">
+                    <div class="flex flex-col md:flex-row items-center md:items-end gap-6 bg-gradient-to-b from-purple-900/60 to-spotify-black p-8 rounded-xl shadow-2xl">
+                        <img src="${album.cover}" class="w-48 h-48 rounded-lg object-cover shadow-2xl border-4 border-black" alt="${album.title}">
+                        <div class="flex flex-col gap-2 text-center md:text-left">
+                            <span class="text-xs uppercase font-bold text-spotify-green">${album.type}</span>
+                            <h1 class="text-5xl font-black">${album.title}</h1>
+                            <p class="text-sm font-semibold text-white">${album.artist} &bull; Released ${album.year}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-4 mt-4">
+                        <h2 class="text-xl font-bold">Track List</h2>
+                        <div class="flex flex-col gap-2">
+            `;
+
+            MOCK_DATA.songs.forEach((song, idx) => {
+                if (song.album === album.title || idx < 3) {
+                    html += `
+                        <div onclick="playSongById('${song.id}')" class="flex items-center justify-between p-3 rounded-md hover:bg-white/10 cursor-pointer group transition">
+                            <div class="flex items-center gap-4">
+                                <span class="w-6 text-center text-spotify-muted text-sm font-semibold">${idx + 1}</span>
+                                <img src="${song.cover}" class="w-12 h-12 rounded object-cover" alt="${song.title}">
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-sm text-white group-hover:text-spotify-green transition">${song.title}</span>
+                                    <span class="text-xs text-spotify-muted">${song.artist}</span>
+                                </div>
+                            </div>
+                            <span class="text-xs text-spotify-muted">${song.duration}</span>
+                        </div>
+                    `;
+                }
+            });
+
+            html += `
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Favorites View... ---
+        function renderFavoritesView(container) {
+            const likedSongs = MOCK_DATA.songs.filter(s => appState.favorites.includes(s.id));
+
+            let html = `
+                <div class="flex flex-col gap-6 animate-fadeIn">
+                    <div class="flex items-end gap-6 bg-gradient-to-b from-indigo-900/80 to-spotify-black p-8 rounded-xl shadow-2xl">
+                        <div class="w-48 h-48 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-800 flex items-center justify-center shadow-2xl">
+                            <i class="fa-solid fa-heart text-7xl text-white"></i>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs uppercase font-bold text-white">Playlist</span>
+                            <h1 class="text-5xl font-black">Liked Songs</h1>
+                            <p class="text-sm text-spotify-muted">${appState.currentUser ? appState.currentUser.name : 'Guest User'} &bull; ${likedSongs.length} liked songs</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2 mt-4">
+            `;
+
+            if (likedSongs.length === 0) {
+                html += `
+                    <div class="flex flex-col items-center justify-center py-16 gap-4 text-center">
+                        <i class="fa-regular fa-heart text-5xl text-spotify-muted"></i>
+                        <h3 class="text-xl font-bold">Songs you like will appear here</h3>
+                        <p class="text-sm text-spotify-muted max-w-sm">Save songs by tapping the heart icon while listening or browsing music cards.</p>
+                        <button onclick="router.navigate('home')" class="mt-2 bg-white text-black font-bold text-sm px-6 py-2.5 rounded-full hover:scale-105 transition">Find songs</button>
+                    </div>
+                `;
+            } else {
+                likedSongs.forEach((song, idx) => {
+                    html += `
+                        <div onclick="playSongById('${song.id}')" class="flex items-center justify-between p-3 rounded-md hover:bg-white/10 cursor-pointer group transition">
+                            <div class="flex items-center gap-4">
+                                <span class="w-6 text-center text-spotify-muted text-sm font-semibold">${idx + 1}</span>
+                                <img src="${song.cover}" class="w-12 h-12 rounded object-cover" alt="${song.title}">
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-sm text-white group-hover:text-spotify-green transition">${song.title}</span>
+                                    <span class="text-xs text-spotify-muted">${song.artist} &bull; ${song.album}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <button onclick="event.stopPropagation(); toggleLikeSong('${song.id}')" class="text-spotify-green text-lg">
+                                    <i class="fa-solid fa-heart"></i>
+                                </button>
+                                <span class="text-xs text-spotify-muted">${song.duration}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            html += `
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Authentication Pages (Signup & Login)... ---
+        function renderSignupView(container) {
+            container.innerHTML = `
+                <div class="max-w-md mx-auto bg-[#121212] p-8 rounded-xl shadow-2xl my-8 flex flex-col gap-6 animate-fadeIn border border-spotify-lightgray/40">
+                    <div class="flex flex-col items-center gap-2 text-center">
+                        <i class="fa-brands fa-spotify text-4xl text-spotify-green"></i>
+                        <h2 class="text-2xl font-black">Sign up to start listening</h2>
+                    </div>
+                    <form onsubmit="handleSignupSubmit(event)" class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-bold text-white">What's your email?</label>
+                            <input type="email" id="signup-email" required placeholder="name@domain.com" class="bg-spotify-lightgray p-3 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-spotify-green">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-bold text-white">Create a password</label>
+                            <input type="password" id="signup-password" required placeholder="Password" class="bg-spotify-lightgray p-3 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-spotify-green">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-bold text-white">What should we call you?</label>
+                            <input type="text" id="signup-name" required placeholder="Enter a profile name" class="bg-spotify-lightgray p-3 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-spotify-green">
+                        </div>
+                        <button type="submit" class="mt-4 bg-spotify-green hover:bg-spotify-darkgreen text-black font-bold py-3 rounded-full transition shadow-lg text-sm">Sign Up</button>
+                    </form>
+                    <div class="flex items-center justify-center gap-2 text-xs text-spotify-muted border-t border-spotify-lightgray pt-4">
+                        <span>Already have an account?</span>
+                        <a href="#" onclick="router.navigate('login'); return false;" class="text-white font-bold hover:underline">Log in here</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderLoginView(container) {
+            container.innerHTML = `
+                <div class="max-w-md mx-auto bg-[#121212] p-8 rounded-xl shadow-2xl my-8 flex flex-col gap-6 animate-fadeIn border border-spotify-lightgray/40">
+                    <div class="flex flex-col items-center gap-2 text-center">
+                        <i class="fa-brands fa-spotify text-4xl text-spotify-green"></i>
+                        <h2 class="text-2xl font-black">Log in to Spotify</h2>
+                    </div>
+                    <form onsubmit="handleLoginSubmit(event)" class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-bold text-white">Email or username</label>
+                            <input type="text" id="login-email" required placeholder="Email or username" class="bg-spotify-lightgray p-3 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-spotify-green">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-bold text-white">Password</label>
+                            <input type="password" id="login-password" required placeholder="Password" class="bg-spotify-lightgray p-3 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-spotify-green">
+                        </div>
+                        <button type="submit" class="mt-4 bg-spotify-green hover:bg-spotify-darkgreen text-black font-bold py-3 rounded-full transition shadow-lg text-sm">Log In</button>
+                    </form>
+                    <div class="flex items-center justify-center gap-2 text-xs text-spotify-muted border-t border-spotify-lightgray pt-4">
+                        <span>Don't have an account?</span>
+                        <a href="#" onclick="router.navigate('signup'); return false;" class="text-white font-bold hover:underline">Sign up for Spotify</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK:Rendering About & Contact Pages... ---
+        function renderAboutView(container) {
+            container.innerHTML = `
+                <div class="max-w-3xl mx-auto flex flex-col gap-8 py-6 animate-fadeIn">
+                    <div class="flex flex-col gap-3 text-center">
+                        <span class="text-xs uppercase font-bold text-spotify-green tracking-widest">About Platform</span>
+                        <h1 class="text-4xl font-extrabold">Music for everyone.</h1>
+                        <p class="text-spotify-muted text-sm">Spotify is a digital music service that gives you access to millions of songs and audio content from creators all over the world.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                        <div class="bg-spotify-darkgray p-6 rounded-lg flex flex-col gap-2">
+                            <i class="fa-solid fa-headphones text-spotify-green text-2xl"></i>
+                            <h3 class="font-bold text-base mt-2">Millions of Tracks</h3>
+                            <p class="text-xs text-spotify-muted">Explore diverse songs, albums, top-tier global artists and curated mood categories instantly.</p>
+                        </div>
+                        <div class="bg-spotify-darkgray p-6 rounded-lg flex flex-col gap-2">
+                            <i class="fa-solid fa-bolt text-spotify-green text-2xl"></i>
+                            <h3 class="font-bold text-base mt-2">Seamless SPA Router</h3>
+                            <p class="text-xs text-spotify-muted">Fully interactive front-end web application built with clean DOM manipulation and zero page reloads.</p>
+                        </div>
+                        <div class="bg-spotify-darkgray p-6 rounded-lg flex flex-col gap-2">
+                            <i class="fa-solid fa-heart text-spotify-green text-2xl"></i>
+                            <h3 class="font-bold text-base mt-2">Personalized Favorites</h3>
+                            <p class="text-xs text-spotify-muted">Like songs and instantly sync them to your dedicated Liked Songs playlist.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderContactView(container) {
+            container.innerHTML = `
+                <div class="max-w-xl mx-auto bg-spotify-darkgray p-8 rounded-xl shadow-2xl my-4 flex flex-col gap-6 animate-fadeIn border border-spotify-lightgray/40">
+                    <div class="flex flex-col gap-1 text-center">
+                        <h1 class="text-3xl font-extrabold">Contact Support</h1>
+                        <p class="text-xs text-spotify-muted">We're here to help with your music streaming experience</p>
+                    </div>
+                    <form onsubmit="handleContactSubmit(event)" class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-bold text-white">Your Name</label>
+                            <input type="text" id="contact-name" required placeholder="John Doe" class="bg-spotify-lightgray p-3 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-spotify-green">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-bold text-white">Email Address</label>
+                            <input type="email" id="contact-email" required placeholder="john@example.com" class="bg-spotify-lightgray p-3 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-spotify-green">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-bold text-white">Message</label>
+                            <textarea id="contact-msg" rows="4" required placeholder="How can we assist you today?" class="bg-spotify-lightgray p-3 rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-spotify-green"></textarea>
+                        </div>
+                        <button type="submit" class="mt-2 bg-spotify-green hover:bg-spotify-darkgreen text-black font-bold py-3 rounded-full transition shadow-lg text-sm">Send Message</button>
+                    </form>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK:Audio Playback & Player Controls Logic... ---
+        function playSongById(songId) {
+            const index = MOCK_DATA.songs.findIndex(s => s.id === songId);
+            if (index !== -1) {
+                appState.currentSongIndex = index;
+                loadAndPlayCurrentSong();
+            }
+        }
+
+        function loadAndPlayCurrentSong() {
+            const song = MOCK_DATA.songs[appState.currentSongIndex];
+            if (!song) return;
+
+            // Update player UI
+            document.getElementById('player-cover').src = song.cover;
+            document.getElementById('player-title').innerText = song.title;
+            document.getElementById('player-artist').innerText = song.artist;
+            
+            const likeBtn = document.getElementById('player-like-btn');
+            if (appState.favorites.includes(song.id)) {
+                likeBtn.innerHTML = `<i class="fa-solid fa-heart text-spotify-green"></i>`;
+            } else {
+                likeBtn.innerHTML = `<i class="fa-regular fa-heart"></i>`;
+            }
+
+            // Setup HTML5 Audio
+            appState.audio.src = song.audioUrl;
+            appState.audio.volume = appState.volume;
+            appState.audio.play().then(() => {
+                appState.isPlaying = true;
+                updatePlayPauseIcon();
+                showEqualizer(true);
+            }).catch(err => {
+                console.log("Audio autoplay prevented or fallback required:", err);
+                appState.isPlaying = true;
+                updatePlayPauseIcon();
+                showEqualizer(true);
+            });
+        }
+
+        function togglePlayPause() {
+            if (!appState.audio.src) {
+                playSongById(MOCK_DATA.songs[0].id);
+                return;
+            }
+            if (appState.isPlaying) {
+                appState.audio.pause();
+                appState.isPlaying = false;
+                showEqualizer(false);
+            } else {
+                appState.audio.play();
+                appState.isPlaying = true;
+                showEqualizer(true);
+            }
+            updatePlayPauseIcon();
+        }
+
+        function updatePlayPauseIcon() {
+            const icon = document.getElementById('play-icon');
+            if (appState.isPlaying) {
+                icon.className = "fa-solid fa-pause text-sm";
+            } else {
+                icon.className = "fa-solid fa-play text-sm ml-0.5";
+            }
+        }
+
+        function showEqualizer(show) {
+            const eq = document.getElementById('equalizer-indicator');
+            if (show) {
+                eq.classList.remove('hidden');
+                eq.classList.add('flex');
+            } else {
+                eq.classList.add('hidden');
+                eq.classList.remove('flex');
+            }
+        }
+
+        function playNextSong() {
+            if (appState.isShuffle) {
+                appState.currentSongIndex = Math.floor(Math.random() * MOCK_DATA.songs.length);
+            } else {
+                appState.currentSongIndex = (appState.currentSongIndex + 1) % MOCK_DATA.songs.length;
+            }
+            loadAndPlayCurrentSong();
+        }
+
+        function playPreviousSong() {
+            appState.currentSongIndex = (appState.currentSongIndex - 1 + MOCK_DATA.songs.length) % MOCK_DATA.songs.length;
+            loadAndPlayCurrentSong();
+        }
+
+        function toggleShuffle() {
+            appState.isShuffle = !appState.isShuffle;
+            const btn = document.getElementById('shuffle-btn');
+            if (appState.isShuffle) {
+                btn.classList.add('text-spotify-green');
+                showToast('Shuffle enabled');
+            } else {
+                btn.classList.remove('text-spotify-green');
+                showToast('Shuffle disabled');
+            }
+        }
+
+        function toggleRepeat() {
+            appState.isRepeat = !appState.isRepeat;
+            const btn = document.getElementById('repeat-btn');
+            if (appState.isRepeat) {
+                btn.classList.add('text-spotify-green');
+                showToast('Repeat enabled');
+            } else {
+                btn.classList.remove('text-spotify-green');
+                showToast('Repeat disabled');
+            }
+        }
+
+        function toggleCurrentSongLike() {
+            const song = MOCK_DATA.songs[appState.currentSongIndex];
+            if (song) {
+                toggleLikeSong(song.id);
+            }
+        }
+
+        function toggleLikeSong(songId) {
+            const idx = appState.favorites.indexOf(songId);
+            if (idx > -1) {
+                appState.favorites.splice(idx, 1);
+                showToast('Removed from Liked Songs');
+            } else {
+                appState.favorites.push(songId);
+                showToast('Added to Liked Songs');
+            }
+            localStorage.setItem('spotify_favorites', JSON.stringify(appState.favorites));
+            
+            // Update UI if on favorites or playing current song
+            renderView();
+            const currentSong = MOCK_DATA.songs[appState.currentSongIndex];
+            if (currentSong && currentSong.id === songId) {
+                const likeBtn = document.getElementById('player-like-btn');
+                if (appState.favorites.includes(songId)) {
+                    likeBtn.innerHTML = `<i class="fa-solid fa-heart text-spotify-green"></i>`;
+                } else {
+                    likeBtn.innerHTML = `<i class="fa-regular fa-heart"></i>`;
+                }
+            }
+        }
+
+        function seekAudio(val) {
+            if (appState.audio.duration) {
+                appState.audio.currentTime = (val / 100) * appState.audio.duration;
+            }
+        }
+
+        function setVolume(val) {
+            appState.volume = parseFloat(val);
+            appState.audio.volume = appState.volume;
+            appState.isMuted = (appState.volume === 0);
+        }
+
+        function toggleMute() {
+            const muteBtn = document.getElementById('mute-btn');
+            if (appState.isMuted) {
+                appState.isMuted = false;
+                appState.audio.volume = appState.volume;
+                muteBtn.innerHTML = `<i class="fa-solid fa-volume-high"></i>`;
+            } else {
+                appState.isMuted = true;
+                appState.audio.volume = 0;
+                muteBtn.innerHTML = `<i class="fa-solid fa-volume-xmark text-spotify-muted"></i>`;
+            }
+        }
+
+        // Audio time update listener
+        appState.audio.addEventListener('timeupdate', () => {
+            if (appState.audio.duration) {
+                const progress = (appState.audio.currentTime / appState.audio.duration) * 100;
+                document.getElementById('progress-bar').value = progress;
+                document.getElementById('current-time').innerText = formatTime(appState.audio.currentTime);
+                document.getElementById('total-duration').innerText = formatTime(appState.audio.duration);
+            }
+        });
+
+        appState.audio.addEventListener('ended', () => {
+            if (appState.isRepeat) {
+                appState.audio.play();
+            } else {
+                playNextSong();
+            }
+        });
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // --- STREAMING_CHUNK:Form Submissions and Search Handlers... ---
+        function handleSignupSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            appState.currentUser = { name, email };
+            localStorage.setItem('spotify_user', JSON.stringify(appState.currentUser));
+            showToast(`Welcome to Spotify, ${name}!`);
+            router.navigate('home');
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const name = email.split('@')[0] || 'Music User';
+            appState.currentUser = { name, email };
+            localStorage.setItem('spotify_user', JSON.stringify(appState.currentUser));
+            showToast(`Welcome back, ${name}!`);
+            router.navigate('home');
+        }
+
+        function logoutUser() {
+            appState.currentUser = null;
+            localStorage.removeItem('spotify_user');
+            showToast('Logged out successfully');
+            renderView();
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            showToast('Support message sent successfully! We will get back to you soon.');
+            router.navigate('home');
+        }
+
+        function handleGlobalSearch(query) {
+            if (!query.trim()) return;
+            const q = query.toLowerCase();
+            const foundSong = MOCK_DATA.songs.find(s => s.title.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q));
+            if (foundSong) {
+                playSongById(foundSong.id);
+                showToast(`Playing: ${foundSong.title}`);
+            }
+        }
+
+        // --- STREAMING_CHUNK:Toast Notification System... ---
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-spotify-green text-black font-bold text-xs px-4 py-3 rounded-lg shadow-2xl animate-bounce pointer-events-auto flex items-center gap-2';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        // --- INITIALIZE APP ON LOAD ---
+        window.onload = function() {
+            renderView();
+        };
+    </script>
+</body>
+</html>

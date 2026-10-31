@@ -1,0 +1,671 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Categories | Vibely</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* CATEGORIES PAGE */
+
+        .categories-page .category-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .categories-page .category-card {
+            width: 100%;
+            min-width: 0;
+            min-height: 145px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+            gap: 9px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-family: Arial, sans-serif;
+            text-align: left;
+            cursor: pointer;
+            transition: transform 0.2s, outline 0.2s;
+        }
+
+        .categories-page .category-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .categories-page .category-card.active {
+            outline: 2px solid #d6baff;
+            outline-offset: 2px;
+        }
+
+        .category-icon {
+            font-size: 27px;
+            margin-bottom: 5px;
+        }
+
+        .category-card h3 {
+            font-size: 18px;
+        }
+
+        .category-card p {
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 12px;
+            font-weight: normal;
+            line-height: 1.6;
+        }
+
+        .category-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 25px 0;
+        }
+
+        .category-filter {
+            padding: 10px 17px;
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            background: #211d2b;
+            color: #d3cede;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .category-filter:hover,
+        .category-filter.active {
+            background: linear-gradient(
+                110deg,
+                var(--purple),
+                var(--blue)
+            );
+            border-color: transparent;
+            color: white;
+        }
+
+        .categories-page .song-card[hidden] {
+            display: none;
+        }
+
+        .categories-page .song-grid {
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+        }
+
+        .categories-page .song-card h3 {
+            overflow-wrap: anywhere;
+        }
+
+        .categories-page .cover-play {
+            opacity: 1;
+            transform: none;
+        }
+
+        #noResults {
+            color: var(--muted);
+            padding: 25px 0;
+        }
+
+        @media (max-width: 1200px) {
+            .categories-page .category-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .categories-page .song-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 800px) {
+            .categories-page .song-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .categories-page .category-card {
+                min-height: 125px;
+                padding: 17px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .categories-page .category-grid {
+                gap: 10px;
+            }
+
+            .categories-page .category-card {
+                padding: 13px;
+            }
+
+            .category-card h3 {
+                font-size: 15px;
+            }
+
+            .category-filters {
+                gap: 7px;
+            }
+
+            .category-filter {
+                padding: 9px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+
+        <a href="index.html" class="brand">
+            <img src="assets/images/vibely_image_1.png"
+                alt="Vibely Logo">
+        </a>
+
+        <p class="menu-title">BROWSE</p>
+
+        <nav class="sidebar-nav">
+
+            <a href="index.html">
+                <span><i class="fa-solid fa-house"></i></span>
+                Home
+            </a>
+
+            <a href="artists.html">
+                <span><i class="fa-solid fa-microphone-lines"></i></span>
+                Artists
+            </a>
+
+            <a href="albums.html">
+                <span><i class="fa-solid fa-compact-disc"></i></span>
+                Albums
+            </a>
+
+            <a href="categories.html" class="active">
+                <span><i class="fa-solid fa-icons"></i></span>
+                Categories
+            </a>
+
+        </nav>
+
+        <p class="menu-title library-title">YOUR LIBRARY</p>
+
+        <nav class="sidebar-nav">
+
+            <a href="favorites.html">
+                <span><i class="fa-solid fa-heart"></i></span>
+                Favorites
+            </a>
+
+            <a href="playlists.html">
+                <span><i class="fa-solid fa-book"></i></span>
+                Playlists
+            </a>
+
+        </nav>
+
+        <p class="menu-title library-title">INFO</p>
+
+        <nav class="sidebar-nav">
+
+            <a href="contact.html">
+                <span><i class="fa-solid fa-envelope"></i></span>
+                Contact
+            </a>
+
+        </nav>
+
+        <a href="profile.html" class="guest-profile">
+
+            <div class="guest-avatar">V</div>
+
+            <div>
+                <p>Guest</p>
+                <small>Free plan</small>
+            </div>
+
+        </a>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP NAVBAR -->
+        <header class="topbar">
+
+            <form class="search-form" id="searchForm" action="#">
+
+                <span>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+
+                <input type="search"
+                    id="searchInput"
+                    name="search"
+                    placeholder="Search songs or moods...">
+
+            </form>
+
+            <div class="account-buttons">
+                <a href="login.html" class="login-button">Log in</a>
+                <a href="signup.html" class="signup-button">Sign up</a>
+            </div>
+
+        </header>
+
+
+        <!-- CATEGORIES PAGE -->
+        <div class="page-content categories-page">
+
+            <!-- PAGE INTRODUCTION -->
+            <section class="hero">
+
+                <div class="hero-content">
+
+                    <p class="eyebrow">FIND YOUR SOUND</p>
+
+                    <h1>Music for every mood.</h1>
+
+                    <p class="hero-description">
+                        Feeling romantic, energetic, or relaxed?
+                        Explore music that matches your mood and
+                        discover your next favourite song.
+                    </p>
+
+                    <div class="hero-buttons">
+
+                        <a href="#category-list"
+                            class="primary-button">
+                            <i class="fa-solid fa-icons"></i>
+                            Explore moods
+                        </a>
+
+                        <a href="#category-songs"
+                            class="secondary-button">
+                            Browse songs
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CATEGORY CARDS -->
+            <section class="music-section" id="category-list">
+
+                <div class="section-header">
+
+                    <h2>Explore by mood</h2>
+
+                    <span>Choose what you feel</span>
+
+                </div>
+
+                <div class="category-grid">
+
+                    <button type="button"
+                        class="category-card romance active"
+                        data-category-filter="all"
+                        style="background:linear-gradient(135deg,#54248c,#21183e);">
+
+                        <span class="category-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </span>
+
+                        <h3>All Music</h3>
+
+                        <p>Explore the complete song collection</p>
+
+                    </button>
+
+
+                    <button type="button"
+                        class="category-card romance"
+                        data-category-filter="romance"
+                        style="background:linear-gradient(135deg,#9b315f,#351c49);">
+
+                        <span class="category-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </span>
+
+                        <h3>Romance</h3>
+
+                        <p>Love songs and heartfelt melodies</p>
+
+                    </button>
+
+
+                    <button type="button"
+                        class="category-card party"
+                        data-category-filter="party">
+
+                        <span class="category-icon">
+                            <i class="fa-solid fa-champagne-glasses"></i>
+                        </span>
+
+                        <h3>Party</h3>
+
+                        <p>Music to bring up the energy</p>
+
+                    </button>
+
+
+                    <button type="button"
+                        class="category-card workout"
+                        data-category-filter="workout">
+
+                        <span class="category-icon">
+                            <i class="fa-solid fa-dumbbell"></i>
+                        </span>
+
+                        <h3>Workout</h3>
+
+                        <p>Rhythms for your exercise sessions</p>
+
+                    </button>
+
+
+                    <button type="button"
+                        class="category-card chill"
+                        data-category-filter="chill">
+
+                        <span class="category-icon">
+                            <i class="fa-solid fa-cloud-moon"></i>
+                        </span>
+
+                        <h3>Chill</h3>
+
+                        <p>Relax and enjoy a peaceful vibe</p>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- CATEGORY FILTERS -->
+            <section class="music-section" id="category-songs">
+
+                <div class="section-header">
+
+                    <h2>Discover songs</h2>
+
+                    <span>Click any cover to play</span>
+
+                </div>
+
+                <div class="category-filters">
+
+                    <button type="button"
+                        class="category-filter active"
+                        data-category-filter="all">
+                        All songs
+                    </button>
+
+                    <button type="button"
+                        class="category-filter"
+                        data-category-filter="romance">
+                        Romance
+                    </button>
+
+                    <button type="button"
+                        class="category-filter"
+                        data-category-filter="party">
+                        Party
+                    </button>
+
+                    <button type="button"
+                        class="category-filter"
+                        data-category-filter="workout">
+                        Workout
+                    </button>
+
+                    <button type="button"
+                        class="category-filter"
+                        data-category-filter="chill">
+                        Chill
+                    </button>
+
+                </div>
+
+
+                <!-- SONG GRID -->
+                <div class="song-grid">
+
+
+                    <!-- KHALASI -->
+                    <article class="song-card"
+                        data-category="chill"
+                        data-search="khalasi aditya gadhvi gujarati chill">
+
+                        <button type="button"
+                            class="cover-button play-song"
+                            data-title="Khalasi"
+                            data-artist="Aditya Gadhvi"
+                            data-audio="assets/audio/songs/Khalasi.mp3"
+                            data-cover="assets/images/song_cover/khalasi_cover.jpg"
+                            aria-label="Play Khalasi">
+
+                            <img src="assets/images/song_cover/khalasi_cover.jpg"
+                                alt="Khalasi cover">
+
+                            <span class="cover-play">▶</span>
+
+                        </button>
+
+                        <h3>Khalasi</h3>
+
+                        <p>Aditya Gadhvi</p>
+
+                    </article>
+
+
+                    <!-- MILLIONARE -->
+                    <article class="song-card"
+                        data-category="party"
+                        data-search="millionare millionaire yo yo honey singh party">
+
+                        <button type="button"
+                            class="cover-button play-song"
+                            data-title="Millionare"
+                            data-artist="Yo Yo Honey Singh"
+                            data-audio="assets/audio/songs/MILLIONARE.mp3"
+                            data-cover="assets/images/song_cover/millionare_cover.jpg"
+                            aria-label="Play Millionare">
+
+                            <img src="assets/images/song_cover/millionare_cover.jpg"
+                                alt="Millionare cover">
+
+                            <span class="cover-play">▶</span>
+
+                        </button>
+
+                        <h3>Millionare</h3>
+
+                        <p>Yo Yo Honey Singh</p>
+
+                    </article>
+
+
+                    <!-- AARI AARI -->
+                    <article class="song-card"
+                        data-category="workout"
+                        data-search="aari aari shashwat sachdev energetic workout">
+
+                        <button type="button"
+                            class="cover-button play-song"
+                            data-title="Aari Aari"
+                            data-artist="Shashwat Sachdev"
+                            data-audio="assets/audio/songs/Aari_Aari.mp3"
+                            data-cover="assets/images/song_cover/aari_aari_cover.jpg"
+                            aria-label="Play Aari Aari">
+
+                            <img src="assets/images/song_cover/aari_aari_cover.jpg"
+                                alt="Aari Aari cover">
+
+                            <span class="cover-play">▶</span>
+
+                        </button>
+
+                        <h3>Aari Aari</h3>
+
+                        <p>Shashwat Sachdev</p>
+
+                    </article>
+
+
+                    <!-- BLINDING LIGHTS -->
+                    <article class="song-card"
+                        data-category="party"
+                        data-search="blinding lights the weeknd international party">
+
+                        <button type="button"
+                            class="cover-button play-song"
+                            data-title="Blinding Lights"
+                            data-artist="The Weeknd"
+                            data-audio="assets/audio/songs/Blinding_Lights.mp3"
+                            data-cover="assets/images/song_cover/blinding_lights_cover.jpg"
+                            aria-label="Play Blinding Lights">
+
+                            <img src="assets/images/song_cover/blinding_lights_cover.jpg"
+                                alt="Blinding Lights cover">
+
+                            <span class="cover-play">▶</span>
+
+                        </button>
+
+                        <h3>Blinding Lights</h3>
+
+                        <p>The Weeknd</p>
+
+                    </article>
+
+
+                    <!-- TUJHE KITNA CHAHNE LAGE -->
+                    <article class="song-card"
+                        data-category="romance"
+                        data-search="tujhe kitna chahne lage arijit singh romantic love">
+
+                        <button type="button"
+                            class="cover-button play-song"
+                            data-title="Tujhe Kitna Chahne Lage"
+                            data-artist="Arijit Singh"
+                            data-audio="assets/audio/songs/Tujhe_Kitna_Chahne_Lage.mp3"
+                            data-cover="assets/images/song_cover/tujhe_kitna_chahne _lage_cover.jpg"
+                            aria-label="Play Tujhe Kitna Chahne Lage">
+
+                            <img src="assets/images/song_cover/tujhe_kitna_chahne _lage_cover.jpg"
+                                alt="Tujhe Kitna Chahne Lage cover">
+
+                            <span class="cover-play">▶</span>
+
+                        </button>
+
+                        <h3>Tujhe Kitna Chahne Lage</h3>
+
+                        <p>Arijit Singh</p>
+
+                    </article>
+
+                </div>
+
+                <p id="noResults" hidden>
+                    No matching songs found. Try another search or category.
+                </p>
+
+            </section>
+
+        </div>
+
+
+        <!-- BOTTOM MUSIC PLAYER -->
+        <footer class="music-player">
+
+            <div class="now-playing">
+
+                <img id="currentCover"
+                    src="assets/images/Baby_Groot.jpeg"
+                    alt="Current song cover">
+
+                <div>
+                    <h4 id="currentTitle">Choose a song</h4>
+                    <p id="currentArtist">Vibely</p>
+                </div>
+
+                <button id="favoriteButton"
+                    type="button"
+                    aria-label="Add to favorites">♡</button>
+
+            </div>
+
+
+            <div class="player-center">
+
+                <div class="player-controls">
+
+                    <button type="button"
+                        id="previousButton"
+                        aria-label="Previous song">↶</button>
+
+                    <button type="button"
+                        id="mainPlayButton"
+                        aria-label="Play or pause">▶</button>
+
+                    <button type="button"
+                        id="nextButton"
+                        aria-label="Next song">↷</button>
+
+                </div>
+
+                <div class="progress-row">
+
+                    <span id="currentTime">0:00</span>
+
+                    <input type="range"
+                        id="progressBar"
+                        min="0"
+                        max="100"
+                        value="0"
+                        aria-label="Song progress">
+
+                    <span id="duration">0:00</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="volume-control">
+
+                <span>🔊</span>
+
+                <input type="range"
+                    id="volumeBar"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value="0.7"
+                    aria-label="Volume">
+
+            </div>
+
+            <audio id="audioPlayer"></audio>
+
+        </footer>
+
+    </main>
+
+    <script src="assets/js/app.js"></script>
+
+</body>
+</html>

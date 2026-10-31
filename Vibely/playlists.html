@@ -1,0 +1,260 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your Vibely music library.">
+
+    <title>Playlists | Vibely</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/library-pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+
+        <a href="index.html" class="brand">
+            <img src="assets/images/vibely_image_1.png" alt="Vibely Logo">
+        </a>
+
+        <p class="menu-title">BROWSE</p>
+
+        <nav class="sidebar-nav">
+            <a href="index.html">
+                <span><i class="fa-solid fa-house"></i></span> Home
+            </a>
+
+            <a href="artists.html">
+                <span><i class="fa-solid fa-microphone-lines"></i></span> Artists
+            </a>
+
+            <a href="albums.html">
+                <span><i class="fa-solid fa-compact-disc"></i></span> Albums
+            </a>
+
+            <a href="categories.html">
+                <span><i class="fa-solid fa-icons"></i></span> Categories
+            </a>
+        </nav>
+
+        <p class="menu-title library-title">YOUR LIBRARY</p>
+
+        <nav class="sidebar-nav">
+            <a href="favorites.html">
+                <span><i class="fa-solid fa-heart"></i></span> Favorites
+            </a>
+
+            <a href="playlists.html" class="active">
+                <span><i class="fa-solid fa-book"></i></span> Playlists
+            </a>
+        </nav>
+
+        <p class="menu-title library-title">INFO</p>
+
+        <nav class="sidebar-nav">
+            <a href="contact.html">
+                <span><i class="fa-solid fa-envelope"></i></span> Contact
+            </a>
+        </nav>
+
+        <a href="profile.html" class="guest-profile">
+            <div class="guest-avatar">V</div>
+            <div>
+                <p>Guest</p>
+                <small>Free plan</small>
+            </div>
+        </a>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP NAVBAR -->
+        <header class="topbar">
+
+            <form class="search-form" id="searchForm" action="#" method="get">
+                <span><i class="fa-solid fa-magnifying-glass"></i></span>
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    name="search"
+                    placeholder="Search your music..."
+                >
+            </form>
+
+            <div class="account-buttons">
+                <a href="login.html" class="login-button">Log in</a>
+                <a href="signup.html" class="signup-button">Sign up</a>
+            </div>
+
+        </header>
+
+        <!-- PLAYLISTS PAGE -->
+        <div class="page-content">
+
+            <section class="music-section library-page">
+
+                <div class="section-header">
+                    <div>
+                        <p class="eyebrow">YOUR COLLECTION</p>
+                        <h2>
+                            <i class="fa-solid fa-book"></i>
+                            Your Playlists
+                        </h2>
+                    </div>
+
+                    <span>Make a collection for every mood</span>
+                </div>
+
+                <!-- CREATE PLAYLIST FORM -->
+                <form id="playlistForm" class="create-playlist-form">
+
+                    <label for="playlistName">Create a playlist</label>
+
+                    <div class="create-playlist-controls">
+
+                        <input
+                            id="playlistName"
+                            name="playlistName"
+                            type="text"
+                            maxlength="60"
+                            placeholder="e.g. Evening Chill"
+                            required
+                        >
+
+                        <button class="primary-button" type="submit">
+                            + Create playlist
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <br>
+                <p class="library-page-intro">
+                    To add a song, click “+ Playlist” beside a song on
+                    Home, Artists, Albums, or Favorites, then enter
+                    the playlist name.
+                </p>
+
+                <!-- Created playlists appear here -->
+                <div id="playlistsList" class="playlists-list"></div>
+
+                <br>
+                <!-- Message shown when there are no playlists -->
+                <div id="playlistsEmpty" class="library-empty">
+
+                    <i class="fa-solid fa-music"></i>
+                    
+                    
+                    <h3>No playlists yet</h3>
+                    <br>
+                    <p>
+                        Create your first playlist above, then add
+                        songs from your music pages.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- BOTTOM MUSIC PLAYER -->
+        <footer class="music-player">
+
+            <div class="now-playing">
+
+                <img
+                    id="currentCover"
+                    src="assets/images/Baby_Groot.jpeg"
+                    alt="Current song cover"
+                >
+
+                <div>
+                    <h4 id="currentTitle">Choose a song</h4>
+                    <p id="currentArtist">Vibely</p>
+                </div>
+
+                <button
+                    id="favoriteButton"
+                    type="button"
+                    aria-label="Add to favorites"
+                >♡</button>
+
+            </div>
+
+            <div class="player-center">
+
+                <div class="player-controls">
+
+                    <button
+                        type="button"
+                        id="previousButton"
+                        aria-label="Previous song"
+                    >↶</button>
+
+                    <button
+                        type="button"
+                        id="mainPlayButton"
+                        aria-label="Play or pause"
+                    >▶</button>
+
+                    <button
+                        type="button"
+                        id="nextButton"
+                        aria-label="Next song"
+                    >↷</button>
+
+                </div>
+
+                <div class="progress-row">
+
+                    <span id="currentTime">0:00</span>
+
+                    <input
+                        type="range"
+                        id="progressBar"
+                        min="0"
+                        max="100"
+                        value="0"
+                        aria-label="Song progress"
+                    >
+
+                    <span id="duration">0:00</span>
+
+                </div>
+
+            </div>
+
+            <div class="volume-control">
+                <span>🔊</span>
+
+                <input
+                    type="range"
+                    id="volumeBar"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value="0.7"
+                    aria-label="Volume"
+                >
+            </div>
+
+            <audio id="audioPlayer"></audio>
+
+        </footer>
+
+    </main>
+
+    <script src="assets/js/app.js"></script>
+
+</body>
+</html>

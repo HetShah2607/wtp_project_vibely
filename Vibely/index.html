@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Vibely</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+
+        <a href="index.html" class="brand">
+            <img src="assets/images/vibely_image_1.png" alt="Vibely Logo">
+        </a>
+
+        <p class="menu-title">BROWSE</p>
+
+        <nav class="sidebar-nav">
+            <a href="index.html" class="active"><span><i class="fa-solid fa-house text-xl w-6"></i></span> Home</a>
+            <a href="artists.html"><span><i class="fa-solid fa-microphone-lines text-xl w-6"></i></span> Artists</a>
+            <a href="albums.html"><span><i class="fa-solid fa-compact-disc text-xl w-6"></i></span> Albums</a>
+            <a href="categories.html"><span><i class="fa-solid fa-icons text-xl w-6"></i></span> Categories</a>
+        </nav>
+
+        <p class="menu-title library-title">YOUR LIBRARY</p>
+
+        <nav class="sidebar-nav">
+            <a href="favorites.html"><span><i class="fa-solid fa-heart text-xl w-6"></i></span> Favorites</a>
+            <a href="playlists.html"><span><i class="fa-solid fa-book text-base"></i></span> Playlists</a>
+        </nav>
+
+        <p class="menu-title library-title">INFO</p>
+
+        <nav class="sidebar-nav">
+            <!-- <a href="about.html"><span>ⓘ</span> About</a> -->
+            <a href="contact.html"><span>✉</span> Contact</a>
+        </nav>
+
+        <a href="profile.html" class="guest-profile">
+            <div class="guest-avatar">V</div>
+            <div>
+                <p>Guest</p>
+                <small>Free plan</small>
+            </div>
+        </a>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP NAVIGATION BAR -->
+        <header class="topbar">
+
+            <!-- <div class="navigation-buttons">
+                <button type="button" onclick="history.back()">‹</button>
+                <button type="button" onclick="history.forward()">›</button>
+            </div> -->
+
+            <form class="search-form" id="searchForm">
+                <span>⌕</span>
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="What do you want to play?"
+                >
+            </form>
+
+            <div class="account-buttons">
+                <a href="login.html" class="login-button">Log in</a>
+                <a href="signup.html" class="signup-button">Sign up</a>
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <div class="page-content">
+
+            <!-- HERO BANNER -->
+            <section class="hero">
+
+                <div class="hero-content">
+
+                    <p class="eyebrow">YOUR MUSIC • YOUR MOOD</p>
+
+                    <h1>Music that moves with you.</h1>
+
+                    <p class="hero-description">
+                        Discover fresh melodies, timeless Bollywood sounds,
+                        and mood-based playlists inside a beautiful
+                        music experience.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="#made-for-you" class="primary-button">
+                            ▶ Start listening
+                        </a>
+
+                        <a href="categories.html" class="secondary-button">
+                            Browse categories
+                        </a>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- MADE FOR YOU -->
+            <section class="music-section" id="made-for-you">
+
+                <div class="section-header">
+                    <h2>Made for you</h2>
+                    <span>Curated demo tracks</span>
+                </div>
+
+                <div class="song-grid">
+
+                    <article class="song-card"
+                        data-search="raah nayi arijit singh">
+
+                        <button class="cover-button play-song"
+                            data-title="Khalasi"
+                            data-artist="Aditya Gadhvi"
+                            data-audio="assets/audio/songs/Khalasi.mp3">
+
+                            <img src="assets/images/song_cover/khalasi_cover.jpg"
+                                alt="Raah Nayi cover">
+                            <span class="cover-play">▶</span>
+
+                        </button>
+
+                        <h3>Khalasi</h3>
+                        <p>Aditya Gadhvi · 4:24</p>
+
+                    </article>
+
+
+                    <article class="song-card"
+                        data-search="saanson ki dhun shreya ghoshal">
+
+                        <button class="cover-button play-song"
+                            data-title="Millionare"
+                            data-artist="Yo Yo Honey Singh"
+                            data-audio="assets/audio/songs/MILLIONARE.mp3">
+
+                            <img src="assets/images/song_cover/millionare_cover.jpg"
+                                alt="Millionare">
+                            <span class="cover-play">▶</span>
+
+                        </button>
+
+                        <h3>Millionare</h3>
+                        <p>Yo Yo Honey Singh · 3:29</p>
+
+                    </article>
+
+
+                    <article class="song-card"
+                        data-search="city lights a r rahman">
+
+                        <button class="cover-button play-song"
+                            data-title="Aari Aari"
+                            data-artist="Shashwat Sachdev"
+                            data-audio="assets/audio/songs/Aari_Aari.mp3">
+
+                            <img src="assets/images/song_cover/aari_aari_cover.jpg"
+                                alt="City Lights cover">
+                            <span class="cover-play">▶</span>
+
+                        </button>
+
+                        <h3>Aari Aari</h3>
+                        <p>Shashwat Sachdev · 3:48</p>
+
+                    </article>
+
+
+                    <article class="song-card"
+                        data-search="dil se again sonu nigam">
+
+                        <button class="cover-button play-song"
+                            data-title="Blinding Lights"
+                            data-artist="The Weeknd"
+                            data-audio="assets/audio/songs/Blinding_Lights.mp3">
+
+                            <img src="assets/images/song_cover/blinding_lights_cover.jpg"
+                                alt="Dil Se Again cover">
+                            <span class="cover-play">▶</span>
+
+                        </button>
+
+                        <h3>Blinding Lights</h3>
+                        <p>The Weeknd · 4:23</p>
+
+                    </article>
+
+
+                    <article class="song-card"
+                        data-search="dancefloor dreams neha kakkar">
+
+                        <button class="cover-button play-song"
+                            data-title="Tujhe Kitna Chahne Lage"
+                            data-artist="Arijit Singh"
+                            data-audio="assets/audio/songs/Tujhe_Kitna_Chahne_Lage.mp3">
+
+                            <img src="assets/images/song_cover/tujhe_kitna_chahne _lage_cover.jpg"
+                                alt="Dancefloor Dreams cover">
+                            <span class="cover-play">▶</span>
+
+                        </button>
+
+                        <h3>Tujhe Kitna Chahne Lage</h3>
+                        <p>Arijit Singh · 4:53</p>
+
+                    </article>
+
+                </div>
+
+                <p id="noResults" hidden>No matching songs found.</p>
+
+            </section>
+
+
+            <!-- ALBUMS -->
+            <section class="music-section">
+
+                <div class="section-header">
+                    <h2>Popular Albums</h2>
+                    <a href="albums.html">Show all</a>
+                </div>
+
+                <div class="album-grid">
+
+                    <a href="albums.html" class="album-card">
+                        <img src="assets/images/album_cover/romantic_album_cover.jpg"
+                            alt="Romantic Hits album">
+                        <h3>Romantic Hits</h3>
+                        <p>Love songs for every mood</p>
+                    </a>
+
+                    <a href="albums.html" class="album-card">
+                        <img src="assets/images/album_cover/classic_album_cover.jpg"
+                            alt="Bollywood Classics album">
+                        <h3>Bollywood Classics</h3>
+                        <p>Timeless Hindi melodies</p>
+                    </a>
+
+                    <a href="albums.html" class="album-card">
+                        <img src="assets/images/album_cover/party_album_cover.jpg"
+                            alt="Party Mix album">
+                        <h3>Party Mix</h3>
+                        <p>Turn up the energy</p>
+                    </a>
+
+                    <a href="albums.html" class="album-card">
+                        <img src="assets/images/album_cover/calm_album_cover.jpg"
+                            alt="Calm Moments album">
+                        <h3>Calm Moments</h3>
+                        <p>Relax and unwind</p>
+                    </a>
+
+                    <a href="albums.html" class="album-card">
+                        <img src="assets/images/album_cover/most_streamed_cover.jpg"
+                            alt="Calm Moments album">
+                        <h3>Most Streamed Songs</h3>
+                        <p>2026's Most Populars</p>
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- CATEGORIES -->
+            <section class="music-section">
+
+                <div class="section-header">
+                    <h2>Explore by mood</h2>
+                    <a href="categories.html">Show all</a>
+                </div>
+
+                <div class="category-grid">
+                    <a href="categories.html" class="category-card romance">
+                        Romance
+                    </a>
+
+                    <a href="categories.html" class="category-card party">
+                        Party
+                    </a>
+
+                    <a href="categories.html" class="category-card workout">
+                        Workout
+                    </a>
+
+                    <a href="categories.html" class="category-card chill">
+                        Chill
+                    </a>
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- BOTTOM MUSIC PLAYER -->
+        <footer class="music-player">
+
+            <div class="now-playing">
+
+                <img id="currentCover"
+                    src="assets/images/Baby_Groot.jpeg"
+                    alt="Current song cover">
+
+                <div>
+                    <h4 id="currentTitle">Choose a song</h4>
+                    <p id="currentArtist">Vibely</p>
+                </div>
+
+                <button id="favoriteButton"
+                    type="button"
+                    aria-label="Add to favorites">♡</button>
+
+            </div>
+
+
+            <div class="player-center">
+
+                <div class="player-controls">
+                    <button type="button" id="previousButton"
+                        aria-label="Previous song">↶</button>
+
+                    <button type="button" id="mainPlayButton"
+                        aria-label="Play or pause">▶</button>
+
+                    <button type="button" id="nextButton"
+                        aria-label="Next song">↷</button>
+                </div>
+
+                <div class="progress-row">
+                    <span id="currentTime">0:00</span>
+
+                    <input type="range" id="progressBar"
+                        min="0" max="100" value="0"
+                        aria-label="Song progress">
+
+                    <span id="duration">0:00</span>
+                </div>
+
+            </div>
+
+
+            <div class="volume-control">
+                <span>🔊</span>
+                <input type="range" id="volumeBar"
+                    min="0" max="1" step="0.01" value="0.7"
+                    aria-label="Volume">
+            </div>
+
+            <audio id="audioPlayer"></audio>
+
+        </footer>
+
+    </main>
+
+    <script src="assets/js/app.js"></script>
+
+</body>
+</html>
